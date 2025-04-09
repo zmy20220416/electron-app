@@ -5,5 +5,5 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
   devMode: () => process.env.NODE_ENV === 'development',
-  ping: () => ipcRenderer.invoke('ping')
+  setTitle: (title) => ipcRenderer.send('set-title', title)
 })

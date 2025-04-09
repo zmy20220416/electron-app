@@ -1,8 +1,14 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
 
+const handleSetTitle = (event, title) => {
+  const webContents = event.sender;
+  const win = BrowserWindow.fromWebContents(webContents);
+  win.setTitle(title);
+};
+
 const createWindow = () => {
-  const win = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -10,12 +16,13 @@ const createWindow = () => {
     }
   })
 
-  win.loadFile('index.html')
+  mainWindow.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
   createWindow();
-  ipcMain.handle('ping', () => ({ name: 'ping', time: Date.now() }))
+
+  ipcMain.on('set-title', handleSetTitle);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

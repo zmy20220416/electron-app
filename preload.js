@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
   devMode: () => process.env.NODE_ENV === 'development',
-  setTitle: (title) => ipcRenderer.send('set-title', title)
+  setTitle: (title) => ipcRenderer.send('set-title', title),
+  openFile: () => ipcRenderer.invoke('dialog:openFile'),
 })

@@ -49,13 +49,28 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools()
 }
 
+app.enableSandbox();
 app.whenReady().then(() => {
   createWindow();
 
   ipcMain.handle('dialog:openFile', handleFileOpen)
   ipcMain.on('set-title', handleSetTitle);
   ipcMain.on('counter-value', handleCounterValue)
-
+  
+/*   const unSandboxedWindow = new BrowserWindow({
+    webPreferences: {
+      sandbox: false,
+    }
+  })
+  unSandboxedWindow.loadURL('https://google.com') */
+  
+  const nodeIntegrationWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
+  nodeIntegrationWindow.loadURL('https://google.com')
+  
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
